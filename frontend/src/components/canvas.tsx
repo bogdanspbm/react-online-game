@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef} from "react";
+import {ConstantBackoff, Websocket, WebsocketBuilder, WebsocketEvent} from "websocket-ts"
 import Player from "../player/player";
 
 const Canvas = () => {
@@ -8,6 +9,10 @@ const Canvas = () => {
         new Player(100, 100),
         // Add more players here
     ];
+
+    const websocket = new WebsocketBuilder("ws://127.0.0.1:8080/ws")
+        .withBackoff(new ConstantBackoff(10 * 1000))
+        .build();
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -43,19 +48,41 @@ const Canvas = () => {
             players.forEach((player) => {
                 player.move(); // Move the player based on current key states
                 player.draw(context);
+
+                if (websocket && websocket.readyState === 1) {
+                    const replicatePlayerMessage = player.getReplicateMessage();
+                    websocket.send(JSON.stringify(replicatePlayerMessage));
+                }
             });
             requestAnimationFrame(draw);
         };
+
+        websocket.addEventListener(WebsocketEvent.open, () => {
+            console.log("Connected to WebSocket server");
+        });
+
+        websocket.addEventListener(WebsocketEvent.close, () => {
+            console.log("WebSocket connection closed");
+        });
+
+        websocket.addEventListener(WebsocketEvent.error, (error) => {
+            console.error("WebSocket error:", error);
+        });
+
 
         draw();
 
         return () => {
             window.removeEventListener("keydown", handleKeydown);
             window.removeEventListener("keyup", handleKeyup);
+
+            if (websocket && websocket.readyState === 1) {
+                websocket.close()
+            }
         };
     }, [players]);
 
-    return <canvas ref={canvasRef} width={800} height={600} />;
+    return <canvas ref={canvasRef} width={800} height={600}/>;
 };
 
 export default Canvas;

@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
 class Player {
+    private uid: string;
     private x: number;
     private y: number;
     private speed: number;
@@ -9,6 +10,7 @@ class Player {
     private keys: { [key: string]: boolean };
 
     constructor(x: number, y: number) {
+        this.uid = this.generateUID();
         this.x = x;
         this.y = y;
         this.speed = 5;
@@ -34,6 +36,16 @@ class Player {
         return color;
     }
 
+    private generateUID(): string {
+        // Generate a random UID using alphanumeric characters
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let uid = "";
+        for (let i = 0; i < 16; i++) {
+            uid += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return uid;
+    }
+
     public move(): void {
         if (this.keys["W"]) {
             this.y -= this.speed;
@@ -47,6 +59,10 @@ class Player {
         if (this.keys["D"]) {
             this.x += this.speed;
         }
+    }
+
+    public getReplicateMessage() : any {
+        return {uid: this.uid, x: this.x, y: this.y}
     }
 
     public draw(context: CanvasRenderingContext2D): void {

@@ -11,6 +11,7 @@
     "react": "",
     "react-dom": "",
     "ts-loader": "",
+    "websocket": "^1.0.34",
     "websocket-ts": ""
   },
   "scripts": {
