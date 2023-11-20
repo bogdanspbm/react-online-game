@@ -485,60 +485,104 @@ var __webpack_exports__ = {};
 var react = __webpack_require__(294);
 // EXTERNAL MODULE: ./node_modules/react-dom/index.js
 var react_dom = __webpack_require__(935);
-;// CONCATENATED MODULE: ./src/components/canvas.tsx
-var __assign = (undefined && undefined.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+;// CONCATENATED MODULE: ./src/player/player.tsx
+var Player = /** @class */ (function () {
+    function Player(x, y) {
+        this.x = x;
+        this.y = y;
+        this.speed = 5;
+        this.color = this.getRandomColor();
+        this.keys = {
+            W: false,
+            A: false,
+            S: false,
+            D: false,
+        };
+    }
+    Player.prototype.setKeyState = function (key, state) {
+        this.keys[key] = state;
     };
-    return __assign.apply(this, arguments);
-};
+    Player.prototype.getRandomColor = function () {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+    Player.prototype.move = function () {
+        if (this.keys["W"]) {
+            this.y -= this.speed;
+        }
+        if (this.keys["S"]) {
+            this.y += this.speed;
+        }
+        if (this.keys["A"]) {
+            this.x -= this.speed;
+        }
+        if (this.keys["D"]) {
+            this.x += this.speed;
+        }
+    };
+    Player.prototype.draw = function (context) {
+        context.fillStyle = this.color;
+        context.fillRect(this.x, this.y, 50, 50);
+    };
+    return Player;
+}());
+/* harmony default export */ const player = (Player);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGxheWVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3BsYXllci9wbGF5ZXIudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdBO0lBT0ksZ0JBQVksQ0FBUyxFQUFFLENBQVM7UUFDNUIsSUFBSSxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUM7UUFDWCxJQUFJLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQztRQUNYLElBQUksQ0FBQyxLQUFLLEdBQUcsQ0FBQyxDQUFDO1FBQ2YsSUFBSSxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUMsY0FBYyxFQUFFLENBQUM7UUFDbkMsSUFBSSxDQUFDLElBQUksR0FBRztZQUNSLENBQUMsRUFBRSxLQUFLO1lBQ1IsQ0FBQyxFQUFFLEtBQUs7WUFDUixDQUFDLEVBQUUsS0FBSztZQUNSLENBQUMsRUFBRSxLQUFLO1NBQ1gsQ0FBQztJQUNOLENBQUM7SUFFTSw0QkFBVyxHQUFsQixVQUFtQixHQUFXLEVBQUUsS0FBYztRQUMxQyxJQUFJLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxHQUFHLEtBQUssQ0FBQztJQUMzQixDQUFDO0lBRU8sK0JBQWMsR0FBdEI7UUFDSSxJQUFNLE9BQU8sR0FBRyxrQkFBa0IsQ0FBQztRQUNuQyxJQUFJLEtBQUssR0FBRyxHQUFHLENBQUM7UUFDaEIsS0FBSyxJQUFJLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEVBQUUsRUFBRTtZQUN4QixLQUFLLElBQUksT0FBTyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLE1BQU0sRUFBRSxHQUFHLEVBQUUsQ0FBQyxDQUFDLENBQUM7U0FDcEQ7UUFDRCxPQUFPLEtBQUssQ0FBQztJQUNqQixDQUFDO0lBRU0scUJBQUksR0FBWDtRQUNJLElBQUksSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRTtZQUNoQixJQUFJLENBQUMsQ0FBQyxJQUFJLElBQUksQ0FBQyxLQUFLLENBQUM7U0FDeEI7UUFDRCxJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLEVBQUU7WUFDaEIsSUFBSSxDQUFDLENBQUMsSUFBSSxJQUFJLENBQUMsS0FBSyxDQUFDO1NBQ3hCO1FBQ0QsSUFBSSxJQUFJLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFO1lBQ2hCLElBQUksQ0FBQyxDQUFDLElBQUksSUFBSSxDQUFDLEtBQUssQ0FBQztTQUN4QjtRQUNELElBQUksSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRTtZQUNoQixJQUFJLENBQUMsQ0FBQyxJQUFJLElBQUksQ0FBQyxLQUFLLENBQUM7U0FDeEI7SUFDTCxDQUFDO0lBRU0scUJBQUksR0FBWCxVQUFZLE9BQWlDO1FBQ3pDLE9BQU8sQ0FBQyxTQUFTLEdBQUcsSUFBSSxDQUFDLEtBQUssQ0FBQztRQUMvQixPQUFPLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLENBQUMsRUFBRSxFQUFFLEVBQUUsRUFBRSxDQUFDLENBQUM7SUFDN0MsQ0FBQztJQUNMLGFBQUM7QUFBRCxDQUFDLEFBcERELElBb0RDO0FBRUQsZUFBZSxNQUFNLENBQUMifQ==
+;// CONCATENATED MODULE: ./src/components/canvas.tsx
+
 
 
 var Canvas = function () {
     var canvasRef = (0,react.useRef)(null);
-    var _a = (0,react.useState)({ x: 0, y: 0 }), position = _a[0], setPosition = _a[1];
-    var speed = 5;
+    var players = [
+        new player(100, 100),
+        // Add more players here
+    ];
     (0,react.useEffect)(function () {
         var canvas = canvasRef.current;
-        var context = canvas.getContext("2d");
+        var context = canvas === null || canvas === void 0 ? void 0 : canvas.getContext("2d");
+        if (!context) {
+            return;
+        }
         var handleKeydown = function (e) {
-            switch (e.key) {
-                case "ArrowUp":
-                    setPosition(__assign(__assign({}, position), { y: position.y - speed }));
-                    break;
-                case "ArrowDown":
-                    setPosition(__assign(__assign({}, position), { y: position.y + speed }));
-                    break;
-                case "ArrowLeft":
-                    setPosition(__assign(__assign({}, position), { x: position.x - speed }));
-                    break;
-                case "ArrowRight":
-                    setPosition(__assign(__assign({}, position), { x: position.x + speed }));
-                    break;
-                default:
-                    break;
-            }
+            var key = e.key.toUpperCase();
+            players.forEach(function (player) {
+                player.setKeyState(key, true); // Set key state to true on keydown
+            });
+        };
+        var handleKeyup = function (e) {
+            var key = e.key.toUpperCase();
+            players.forEach(function (player) {
+                player.setKeyState(key, false); // Set key state to false on keyup
+            });
         };
         window.addEventListener("keydown", handleKeydown);
+        window.addEventListener("keyup", handleKeyup);
         var draw = function () {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.fillRect(position.x, position.y, 50, 50);
+            if (!context) {
+                return;
+            }
+            context.clearRect(0, 0, (canvas === null || canvas === void 0 ? void 0 : canvas.width) || 0, (canvas === null || canvas === void 0 ? void 0 : canvas.height) || 0);
+            players.forEach(function (player) {
+                player.move(); // Move the player based on current key states
+                player.draw(context);
+            });
             requestAnimationFrame(draw);
         };
         draw();
         return function () {
             window.removeEventListener("keydown", handleKeydown);
+            window.removeEventListener("keyup", handleKeyup);
         };
-    }, [position]);
+    }, [players]);
     return react.createElement("canvas", { ref: canvasRef, width: 800, height: 600 });
 };
 /* harmony default export */ const canvas = (Canvas);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FudmFzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbXBvbmVudHMvY2FudmFzLnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztBQUFBLE9BQU8sS0FBSyxLQUFLLE1BQU0sT0FBTyxDQUFDO0FBQy9CLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUVwRCxJQUFNLE1BQU0sR0FBRztJQUNYLElBQU0sU0FBUyxHQUFHLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUN6QixJQUFBLEtBQTBCLFFBQVEsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQWpELFFBQVEsUUFBQSxFQUFFLFdBQVcsUUFBNEIsQ0FBQztJQUN6RCxJQUFNLEtBQUssR0FBRyxDQUFDLENBQUM7SUFFaEIsU0FBUyxDQUFDO1FBQ04sSUFBTSxNQUFNLEdBQUcsU0FBUyxDQUFDLE9BQU8sQ0FBQztRQUNqQyxJQUFNLE9BQU8sR0FBRyxNQUFNLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQ3hDLElBQU0sYUFBYSxHQUFHLFVBQUMsQ0FBZ0I7WUFDbkMsUUFBUSxDQUFDLENBQUMsR0FBRyxFQUFFO2dCQUNYLEtBQUssU0FBUztvQkFDVixXQUFXLHVCQUFNLFFBQVEsS0FBRSxDQUFDLEVBQUUsUUFBUSxDQUFDLENBQUMsR0FBRyxLQUFLLElBQUcsQ0FBQztvQkFDcEQsTUFBTTtnQkFDVixLQUFLLFdBQVc7b0JBQ1osV0FBVyx1QkFBTSxRQUFRLEtBQUUsQ0FBQyxFQUFFLFFBQVEsQ0FBQyxDQUFDLEdBQUcsS0FBSyxJQUFHLENBQUM7b0JBQ3BELE1BQU07Z0JBQ1YsS0FBSyxXQUFXO29CQUNaLFdBQVcsdUJBQU0sUUFBUSxLQUFFLENBQUMsRUFBRSxRQUFRLENBQUMsQ0FBQyxHQUFHLEtBQUssSUFBRyxDQUFDO29CQUNwRCxNQUFNO2dCQUNWLEtBQUssWUFBWTtvQkFDYixXQUFXLHVCQUFNLFFBQVEsS0FBRSxDQUFDLEVBQUUsUUFBUSxDQUFDLENBQUMsR0FBRyxLQUFLLElBQUcsQ0FBQztvQkFDcEQsTUFBTTtnQkFDVjtvQkFDSSxNQUFNO2FBQ2I7UUFDTCxDQUFDLENBQUM7UUFFRixNQUFNLENBQUMsZ0JBQWdCLENBQUMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxDQUFDO1FBRWxELElBQU0sSUFBSSxHQUFHO1lBQ1QsT0FBTyxDQUFDLFNBQVMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLE1BQU0sQ0FBQyxLQUFLLEVBQUUsTUFBTSxDQUFDLE1BQU0sQ0FBQyxDQUFDO1lBQ3JELE9BQU8sQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLENBQUMsRUFBRSxRQUFRLENBQUMsQ0FBQyxFQUFFLEVBQUUsRUFBRSxFQUFFLENBQUMsQ0FBQztZQUNqRCxxQkFBcUIsQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUNoQyxDQUFDLENBQUM7UUFFRixJQUFJLEVBQUUsQ0FBQztRQUVQLE9BQU87WUFDSCxNQUFNLENBQUMsbUJBQW1CLENBQUMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxDQUFDO1FBQ3pELENBQUMsQ0FBQztJQUNOLENBQUMsRUFBRSxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUM7SUFFZixPQUFPLGdDQUFRLEdBQUcsRUFBRSxTQUFTLEVBQUUsS0FBSyxFQUFFLEdBQUcsRUFBRSxNQUFNLEVBQUUsR0FBRyxHQUFJLENBQUM7QUFDL0QsQ0FBQyxDQUFDO0FBRUYsZUFBZSxNQUFNLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FudmFzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbXBvbmVudHMvY2FudmFzLnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEtBQUssS0FBSyxNQUFNLE9BQU8sQ0FBQztBQUMvQixPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sRUFBWSxNQUFNLE9BQU8sQ0FBQztBQUNwRCxPQUFPLE1BQU0sTUFBTSxrQkFBa0IsQ0FBQztBQUV0QyxJQUFNLE1BQU0sR0FBRztJQUNYLElBQU0sU0FBUyxHQUFHLE1BQU0sQ0FBMkIsSUFBSSxDQUFDLENBQUM7SUFDekQsSUFBTSxPQUFPLEdBQUc7UUFDWixJQUFJLE1BQU0sQ0FBQyxHQUFHLEVBQUUsR0FBRyxDQUFDO1FBQ3BCLHdCQUF3QjtLQUMzQixDQUFDO0lBRUYsU0FBUyxDQUFDO1FBQ04sSUFBTSxNQUFNLEdBQUcsU0FBUyxDQUFDLE9BQU8sQ0FBQztRQUNqQyxJQUFNLE9BQU8sR0FBRyxNQUFNLGFBQU4sTUFBTSx1QkFBTixNQUFNLENBQUUsVUFBVSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBRXpDLElBQUksQ0FBQyxPQUFPLEVBQUU7WUFDVixPQUFPO1NBQ1Y7UUFFRCxJQUFNLGFBQWEsR0FBRyxVQUFDLENBQWdCO1lBQ25DLElBQU0sR0FBRyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsV0FBVyxFQUFFLENBQUM7WUFDaEMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxVQUFDLE1BQU07Z0JBQ25CLE1BQU0sQ0FBQyxXQUFXLENBQUMsR0FBRyxFQUFFLElBQUksQ0FBQyxDQUFDLENBQUMsbUNBQW1DO1lBQ3RFLENBQUMsQ0FBQyxDQUFDO1FBQ1AsQ0FBQyxDQUFDO1FBRUYsSUFBTSxXQUFXLEdBQUcsVUFBQyxDQUFnQjtZQUNqQyxJQUFNLEdBQUcsR0FBRyxDQUFDLENBQUMsR0FBRyxDQUFDLFdBQVcsRUFBRSxDQUFDO1lBQ2hDLE9BQU8sQ0FBQyxPQUFPLENBQUMsVUFBQyxNQUFNO2dCQUNuQixNQUFNLENBQUMsV0FBVyxDQUFDLEdBQUcsRUFBRSxLQUFLLENBQUMsQ0FBQyxDQUFDLGtDQUFrQztZQUN0RSxDQUFDLENBQUMsQ0FBQztRQUNQLENBQUMsQ0FBQztRQUVGLE1BQU0sQ0FBQyxnQkFBZ0IsQ0FBQyxTQUFTLEVBQUUsYUFBYSxDQUFDLENBQUM7UUFDbEQsTUFBTSxDQUFDLGdCQUFnQixDQUFDLE9BQU8sRUFBRSxXQUFXLENBQUMsQ0FBQztRQUU5QyxJQUFNLElBQUksR0FBRztZQUNULElBQUksQ0FBQyxPQUFPLEVBQUU7Z0JBQ1YsT0FBTzthQUNWO1lBRUQsT0FBTyxDQUFDLFNBQVMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUEsTUFBTSxhQUFOLE1BQU0sdUJBQU4sTUFBTSxDQUFFLEtBQUssS0FBSSxDQUFDLEVBQUUsQ0FBQSxNQUFNLGFBQU4sTUFBTSx1QkFBTixNQUFNLENBQUUsTUFBTSxLQUFJLENBQUMsQ0FBQyxDQUFDO1lBQ2pFLE9BQU8sQ0FBQyxPQUFPLENBQUMsVUFBQyxNQUFNO2dCQUNuQixNQUFNLENBQUMsSUFBSSxFQUFFLENBQUMsQ0FBQyw4Q0FBOEM7Z0JBQzdELE1BQU0sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUM7WUFDekIsQ0FBQyxDQUFDLENBQUM7WUFDSCxxQkFBcUIsQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUNoQyxDQUFDLENBQUM7UUFFRixJQUFJLEVBQUUsQ0FBQztRQUVQLE9BQU87WUFDSCxNQUFNLENBQUMsbUJBQW1CLENBQUMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxDQUFDO1lBQ3JELE1BQU0sQ0FBQyxtQkFBbUIsQ0FBQyxPQUFPLEVBQUUsV0FBVyxDQUFDLENBQUM7UUFDckQsQ0FBQyxDQUFDO0lBQ04sQ0FBQyxFQUFFLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQztJQUVkLE9BQU8sZ0NBQVEsR0FBRyxFQUFFLFNBQVMsRUFBRSxLQUFLLEVBQUUsR0FBRyxFQUFFLE1BQU0sRUFBRSxHQUFHLEdBQUksQ0FBQztBQUMvRCxDQUFDLENBQUM7QUFFRixlQUFlLE1BQU0sQ0FBQyJ9
 ;// CONCATENATED MODULE: ./src/app.tsx
 
 
