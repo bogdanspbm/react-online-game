@@ -1,24 +1,16 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import { useState } from 'react'
+import { createEvent, createStore } from "effector"
+import { useEvent, useStore } from "effector-react"
 
+import { ConstantBackoff, Websocket, WebsocketBuilder, WebsocketEvent } from "websocket-ts"
 
-function Button() {
-    const [title, setTitle] = useState("<placeholder>")
-    const handleClick = function (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        console.log(event)
-        setTitle(prompt("enter new title", "no data"))
-    }
-    return (
-        <>
-            <h1>{title}</h1>
-            <button onClick={handleClick} title="Click me">Click Me</button>
-        </>)
-}
+import { applyPatch } from "fast-json-patch"
+import App from "./app";
 
 ReactDOM.render(
     <React.StrictMode>
-        <Button></Button>
+        <App />
     </React.StrictMode>,
     document.getElementById("root")
 )

@@ -480,24 +480,82 @@ if (true) {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(294);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(935);
 
-
-
-function Button() {
-    var _a = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("<placeholder>"), title = _a[0], setTitle = _a[1];
-    var handleClick = function (event) {
-        console.log(event);
-        setTitle(prompt("enter new title", "no data"));
+// EXTERNAL MODULE: ./node_modules/react/index.js
+var react = __webpack_require__(294);
+// EXTERNAL MODULE: ./node_modules/react-dom/index.js
+var react_dom = __webpack_require__(935);
+;// CONCATENATED MODULE: ./src/components/canvas.tsx
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
     };
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, title),
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", { onClick: handleClick, title: "Click me" }, "Click Me")));
-}
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, null,
-    react__WEBPACK_IMPORTED_MODULE_0__.createElement(Button, null)), document.getElementById("root"));
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sS0FBSyxLQUFLLE1BQU0sT0FBTyxDQUFBO0FBQzlCLE9BQU8sS0FBSyxRQUFRLE1BQU0sV0FBVyxDQUFBO0FBQ3JDLE9BQU8sRUFBRSxRQUFRLEVBQUUsTUFBTSxPQUFPLENBQUE7QUFHaEMsU0FBUyxNQUFNO0lBQ0wsSUFBQSxLQUFvQixRQUFRLENBQUMsZUFBZSxDQUFDLEVBQTVDLEtBQUssUUFBQSxFQUFFLFFBQVEsUUFBNkIsQ0FBQTtJQUNuRCxJQUFNLFdBQVcsR0FBRyxVQUFVLEtBQXNEO1FBQ2hGLE9BQU8sQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLENBQUE7UUFDbEIsUUFBUSxDQUFDLE1BQU0sQ0FBQyxpQkFBaUIsRUFBRSxTQUFTLENBQUMsQ0FBQyxDQUFBO0lBQ2xELENBQUMsQ0FBQTtJQUNELE9BQU8sQ0FDSDtRQUNJLGdDQUFLLEtBQUssQ0FBTTtRQUNoQixnQ0FBUSxPQUFPLEVBQUUsV0FBVyxFQUFFLEtBQUssRUFBQyxVQUFVLGVBQWtCLENBQ2pFLENBQUMsQ0FBQTtBQUNaLENBQUM7QUFFRCxRQUFRLENBQUMsTUFBTSxDQUNYLG9CQUFDLEtBQUssQ0FBQyxVQUFVO0lBQ2Isb0JBQUMsTUFBTSxPQUFVLENBQ0YsRUFDbkIsUUFBUSxDQUFDLGNBQWMsQ0FBQyxNQUFNLENBQUMsQ0FDbEMsQ0FBQSJ9
+    return __assign.apply(this, arguments);
+};
+
+
+var Canvas = function () {
+    var canvasRef = (0,react.useRef)(null);
+    var _a = (0,react.useState)({ x: 0, y: 0 }), position = _a[0], setPosition = _a[1];
+    var speed = 5;
+    (0,react.useEffect)(function () {
+        var canvas = canvasRef.current;
+        var context = canvas.getContext("2d");
+        var handleKeydown = function (e) {
+            switch (e.key) {
+                case "ArrowUp":
+                    setPosition(__assign(__assign({}, position), { y: position.y - speed }));
+                    break;
+                case "ArrowDown":
+                    setPosition(__assign(__assign({}, position), { y: position.y + speed }));
+                    break;
+                case "ArrowLeft":
+                    setPosition(__assign(__assign({}, position), { x: position.x - speed }));
+                    break;
+                case "ArrowRight":
+                    setPosition(__assign(__assign({}, position), { x: position.x + speed }));
+                    break;
+                default:
+                    break;
+            }
+        };
+        window.addEventListener("keydown", handleKeydown);
+        var draw = function () {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillRect(position.x, position.y, 50, 50);
+            requestAnimationFrame(draw);
+        };
+        draw();
+        return function () {
+            window.removeEventListener("keydown", handleKeydown);
+        };
+    }, [position]);
+    return react.createElement("canvas", { ref: canvasRef, width: 800, height: 600 });
+};
+/* harmony default export */ const canvas = (Canvas);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FudmFzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbXBvbmVudHMvY2FudmFzLnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7OztBQUFBLE9BQU8sS0FBSyxLQUFLLE1BQU0sT0FBTyxDQUFDO0FBQy9CLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxNQUFNLE9BQU8sQ0FBQztBQUVwRCxJQUFNLE1BQU0sR0FBRztJQUNYLElBQU0sU0FBUyxHQUFHLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUN6QixJQUFBLEtBQTBCLFFBQVEsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQWpELFFBQVEsUUFBQSxFQUFFLFdBQVcsUUFBNEIsQ0FBQztJQUN6RCxJQUFNLEtBQUssR0FBRyxDQUFDLENBQUM7SUFFaEIsU0FBUyxDQUFDO1FBQ04sSUFBTSxNQUFNLEdBQUcsU0FBUyxDQUFDLE9BQU8sQ0FBQztRQUNqQyxJQUFNLE9BQU8sR0FBRyxNQUFNLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQ3hDLElBQU0sYUFBYSxHQUFHLFVBQUMsQ0FBZ0I7WUFDbkMsUUFBUSxDQUFDLENBQUMsR0FBRyxFQUFFO2dCQUNYLEtBQUssU0FBUztvQkFDVixXQUFXLHVCQUFNLFFBQVEsS0FBRSxDQUFDLEVBQUUsUUFBUSxDQUFDLENBQUMsR0FBRyxLQUFLLElBQUcsQ0FBQztvQkFDcEQsTUFBTTtnQkFDVixLQUFLLFdBQVc7b0JBQ1osV0FBVyx1QkFBTSxRQUFRLEtBQUUsQ0FBQyxFQUFFLFFBQVEsQ0FBQyxDQUFDLEdBQUcsS0FBSyxJQUFHLENBQUM7b0JBQ3BELE1BQU07Z0JBQ1YsS0FBSyxXQUFXO29CQUNaLFdBQVcsdUJBQU0sUUFBUSxLQUFFLENBQUMsRUFBRSxRQUFRLENBQUMsQ0FBQyxHQUFHLEtBQUssSUFBRyxDQUFDO29CQUNwRCxNQUFNO2dCQUNWLEtBQUssWUFBWTtvQkFDYixXQUFXLHVCQUFNLFFBQVEsS0FBRSxDQUFDLEVBQUUsUUFBUSxDQUFDLENBQUMsR0FBRyxLQUFLLElBQUcsQ0FBQztvQkFDcEQsTUFBTTtnQkFDVjtvQkFDSSxNQUFNO2FBQ2I7UUFDTCxDQUFDLENBQUM7UUFFRixNQUFNLENBQUMsZ0JBQWdCLENBQUMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxDQUFDO1FBRWxELElBQU0sSUFBSSxHQUFHO1lBQ1QsT0FBTyxDQUFDLFNBQVMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLE1BQU0sQ0FBQyxLQUFLLEVBQUUsTUFBTSxDQUFDLE1BQU0sQ0FBQyxDQUFDO1lBQ3JELE9BQU8sQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLENBQUMsRUFBRSxRQUFRLENBQUMsQ0FBQyxFQUFFLEVBQUUsRUFBRSxFQUFFLENBQUMsQ0FBQztZQUNqRCxxQkFBcUIsQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUNoQyxDQUFDLENBQUM7UUFFRixJQUFJLEVBQUUsQ0FBQztRQUVQLE9BQU87WUFDSCxNQUFNLENBQUMsbUJBQW1CLENBQUMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxDQUFDO1FBQ3pELENBQUMsQ0FBQztJQUNOLENBQUMsRUFBRSxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUM7SUFFZixPQUFPLGdDQUFRLEdBQUcsRUFBRSxTQUFTLEVBQUUsS0FBSyxFQUFFLEdBQUcsRUFBRSxNQUFNLEVBQUUsR0FBRyxHQUFJLENBQUM7QUFDL0QsQ0FBQyxDQUFDO0FBRUYsZUFBZSxNQUFNLENBQUMifQ==
+;// CONCATENATED MODULE: ./src/app.tsx
+
+
+var App = function () {
+    return (react.createElement("div", null,
+        react.createElement("h1", null, "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043A\u0443\u0431\u0438\u043A\u043E\u043C \u0441 \u043A\u043B\u0430\u0432\u0438\u0430\u0442\u0443\u0440\u044B"),
+        react.createElement(canvas, null)));
+};
+/* harmony default export */ const app = (App);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL2FwcC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxLQUFLLEtBQUssTUFBTSxPQUFPLENBQUM7QUFDL0IsT0FBTyxNQUFNLE1BQU0scUJBQXFCLENBQUM7QUFFekMsSUFBTSxHQUFHLEdBQUc7SUFDUixPQUFPLENBQ0g7UUFDSSw4TUFBd0M7UUFDeEMsb0JBQUMsTUFBTSxPQUFHLENBQ1IsQ0FDVCxDQUFDO0FBQ04sQ0FBQyxDQUFDO0FBRUYsZUFBZSxHQUFHLENBQUMifQ==
+;// CONCATENATED MODULE: ./src/index.tsx
+
+
+
+react_dom.render(react.createElement(react.StrictMode, null,
+    react.createElement(app, null)), document.getElementById("root"));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sS0FBSyxLQUFLLE1BQU0sT0FBTyxDQUFBO0FBQzlCLE9BQU8sS0FBSyxRQUFRLE1BQU0sV0FBVyxDQUFBO0FBT3JDLE9BQU8sR0FBRyxNQUFNLE9BQU8sQ0FBQztBQUV4QixRQUFRLENBQUMsTUFBTSxDQUNYLG9CQUFDLEtBQUssQ0FBQyxVQUFVO0lBQ2Isb0JBQUMsR0FBRyxPQUFHLENBQ1EsRUFDbkIsUUFBUSxDQUFDLGNBQWMsQ0FBQyxNQUFNLENBQUMsQ0FDbEMsQ0FBQSJ9
 })();
 
 /******/ })()
