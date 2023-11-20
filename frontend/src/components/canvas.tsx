@@ -1,15 +1,13 @@
 import * as React from "react";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {ConstantBackoff, Websocket, WebsocketBuilder, WebsocketEvent} from "websocket-ts"
 import Player from "../player/player";
 import {Message} from "effector/inspect";
 
 const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const players = [
-        new Player(100, 100),
-        // Add more players here
-    ];
+    const [playersMap, setPlayersMap] = useState<Map<string, Player>>(new Map());
+    const [controlledPlayer, setControlledPlayer] = useState<Player | null>(new Player(100,100));
 
     const websocket = new WebsocketBuilder("ws://127.0.0.1:8080/ws")
         .withBackoff(new ConstantBackoff(10 * 1000))
@@ -25,16 +23,16 @@ const Canvas = () => {
 
         const handleKeydown = (e: KeyboardEvent) => {
             const key = e.key.toUpperCase();
-            players.forEach((player) => {
-                player.setKeyState(key, true); // Set key state to true on keydown
-            });
+            if (controlledPlayer) {
+                controlledPlayer.setKeyState(key, true);
+            }
         };
 
         const handleKeyup = (e: KeyboardEvent) => {
             const key = e.key.toUpperCase();
-            players.forEach((player) => {
-                player.setKeyState(key, false); // Set key state to false on keyup
-            });
+            if (controlledPlayer) {
+                controlledPlayer.setKeyState(key, false);
+            }
         };
 
         window.addEventListener("keydown", handleKeydown);
@@ -46,14 +44,19 @@ const Canvas = () => {
             }
 
             context.clearRect(0, 0, canvas?.width || 0, canvas?.height || 0);
-            players.forEach((player) => {
-                player.move(); // Move the player based on current key states
-                player.draw(context);
 
-                if (player.isMoving() && websocket && websocket.readyState === 1) {
-                    const replicatePlayerMessage = player.getReplicateMessage();
+            if (controlledPlayer) {
+                controlledPlayer.move();
+                controlledPlayer.draw(context);
+
+                if (controlledPlayer.isMoving() && websocket && websocket.readyState === 1) {
+                    const replicatePlayerMessage = controlledPlayer.getReplicateMessage();
                     websocket.send(JSON.stringify(replicatePlayerMessage));
                 }
+            }
+
+            playersMap.forEach((player) => {
+                player.draw(context);
             });
             requestAnimationFrame(draw);
         };
@@ -72,7 +75,34 @@ const Canvas = () => {
 
         websocket.addEventListener(WebsocketEvent.message, (websocket, event) => {
             console.log("Received message:", event.data);
-            // Handle the received message as needed
+            const message = JSON.parse(event.data);
+            const {uid, x, y} = message;
+
+            if (!playersMap.has(uid)) {
+                const newPlayer = new Player(x, y);
+                playersMap.set(uid, newPlayer);
+
+                if (websocket && websocket.readyState === 1) {
+                    const replicatePlayerMessage = newPlayer.getReplicateMessage();
+                    websocket.send(JSON.stringify(replicatePlayerMessage));
+                }
+
+                return;
+            }
+
+            const updatedPlayer = playersMap.get(uid);
+
+            if (updatedPlayer) {
+                updatedPlayer.setX(x);
+                updatedPlayer.setY(y);
+
+                // If the controlled player UID matches, set it as the controlled player
+                if (controlledPlayer && controlledPlayer.getUID() === uid) {
+                    setControlledPlayer(updatedPlayer);
+                }
+            }
+
+            setPlayersMap(new Map(playersMap));
         });
 
         draw();
@@ -85,7 +115,7 @@ const Canvas = () => {
                 websocket.close()
             }
         };
-    }, [players]);
+    }, [playersMap, controlledPlayer]);
 
     return <canvas ref={canvasRef} width={800} height={600}/>;
 };

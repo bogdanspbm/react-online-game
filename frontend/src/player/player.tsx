@@ -23,6 +23,18 @@ class Player {
         };
     }
 
+    public getUID() : string {
+        return this.uid;
+    }
+
+    public setX(x: number) {
+        this.x = x;
+    }
+
+    public setY(y: number) {
+        this.y = y;
+    }
+
     public setKeyState(key: string, state: boolean): void {
         this.keys[key] = state;
     }
@@ -63,7 +75,7 @@ class Player {
 
     public isMoving(): boolean {
         if (this.keys["W"]) {
-          return true;
+            return true;
         }
         if (this.keys["S"]) {
             return true;
