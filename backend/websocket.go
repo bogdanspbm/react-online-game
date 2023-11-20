@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"net/http"
 )
+
+var players = make(map[string]Player)
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -25,13 +28,41 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	for {
-		messageType, p, err := conn.ReadMessage()
-		fmt.Println(string(p))
+		_, p, err := conn.ReadMessage()
+
 		if err != nil {
 			return
 		}
-		if err := conn.WriteMessage(messageType, p); err != nil {
-			return
+
+		var playerReplication Player
+		err = json.Unmarshal(p, &playerReplication)
+
+		if err != nil {
+			continue
+		}
+
+		playerReplication.Connection = conn
+		players[playerReplication.UID] = playerReplication
+		replicatePlayerToOther(playerReplication)
+	}
+}
+
+func replicatePlayerToOther(player Player) {
+	jsonString, err := json.Marshal(player)
+
+	if err != nil {
+		return
+	}
+
+	for k, v := range players {
+		if k == player.UID {
+			continue
+		}
+
+		err := v.Connection.WriteMessage(websocket.TextMessage, jsonString)
+
+		if err != nil {
+			delete(players, k)
 		}
 	}
 }

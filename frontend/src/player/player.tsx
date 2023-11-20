@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 
 class Player {
     private uid: string;
@@ -61,7 +61,24 @@ class Player {
         }
     }
 
-    public getReplicateMessage() : any {
+    public isMoving(): boolean {
+        if (this.keys["W"]) {
+          return true;
+        }
+        if (this.keys["S"]) {
+            return true;
+        }
+        if (this.keys["A"]) {
+            return true;
+        }
+        if (this.keys["D"]) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public getReplicateMessage(): any {
         return {uid: this.uid, x: this.x, y: this.y}
     }
 

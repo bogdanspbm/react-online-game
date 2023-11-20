@@ -2,6 +2,7 @@ import * as React from "react";
 import {useEffect, useRef} from "react";
 import {ConstantBackoff, Websocket, WebsocketBuilder, WebsocketEvent} from "websocket-ts"
 import Player from "../player/player";
+import {Message} from "effector/inspect";
 
 const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -49,7 +50,7 @@ const Canvas = () => {
                 player.move(); // Move the player based on current key states
                 player.draw(context);
 
-                if (websocket && websocket.readyState === 1) {
+                if (player.isMoving() && websocket && websocket.readyState === 1) {
                     const replicatePlayerMessage = player.getReplicateMessage();
                     websocket.send(JSON.stringify(replicatePlayerMessage));
                 }
@@ -69,6 +70,10 @@ const Canvas = () => {
             console.error("WebSocket error:", error);
         });
 
+        websocket.addEventListener(WebsocketEvent.message, (websocket, event) => {
+            console.log("Received message:", event.data);
+            // Handle the received message as needed
+        });
 
         draw();
 
