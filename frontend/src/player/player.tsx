@@ -23,7 +23,11 @@ class Player {
         };
     }
 
-    public getUID() : string {
+    public setUID(uid: string) {
+        this.uid = uid;
+    }
+
+    public getUID(): string {
         return this.uid;
     }
 

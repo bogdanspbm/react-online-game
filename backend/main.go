@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/ws", handleWebSocket)
+	game := CreateGame()
+	http.HandleFunc("/ws", game.handleWebSocket)
 	http.ListenAndServe(":8080", nil)
 }
